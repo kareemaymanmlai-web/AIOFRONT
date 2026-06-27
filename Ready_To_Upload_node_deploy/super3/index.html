@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub Pay — Super Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <div class="modal-icon danger" id="modal-icon"><i class="ti ti-alert-triangle" style="color:var(--re)"></i></div>
+    <div class="modal-title" id="modal-title">تأكيد الإجراء</div>
+    <div class="modal-body" id="modal-body">هل أنت متأكد؟</div>
+    <div class="modal-actions">
+      <button class="btn btn-g" onclick="closeModal()">إلغاء</button>
+      <button class="btn btn-r" id="modal-confirm-btn">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADER OVERLAY -->
+<div class="loader-overlay" id="loader-overlay">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">SP</div>
+    <div class="sb-title">Sub Pay</div>
+    <div class="sb-sub">Super Admin Panel</div>
+  </div>
+  <div class="sb-sect">
+    <div class="sb-lbl">الرئيسية</div>
+    <button class="sb-btn on" onclick="go('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+  </div>
+  <div class="sb-sect">
+    <div class="sb-lbl">الـ Tenants</div>
+    <button class="sb-btn" onclick="go('tenants',this)"><i class="ti ti-building"></i> كل الـ Tenants</button>
+    <button class="sb-btn" onclick="go('new-tenant',this)"><i class="ti ti-plus"></i> Tenant جديد</button>
+  </div>
+  <div class="sb-sect">
+    <div class="sb-lbl">المالية</div>
+    <button class="sb-btn" onclick="go('revenue',this)"><i class="ti ti-chart-bar"></i> الإيرادات</button>
+    <button class="sb-btn" onclick="go('subscriptions',this)"><i class="ti ti-credit-card"></i> الاشتراكات <span class="sb-badge">5</span></button>
+  </div>
+  <div class="sb-sect">
+    <div class="sb-lbl">النظام</div>
+    <button class="sb-btn" onclick="go('settings',this)"><i class="ti ti-settings"></i> الإعدادات</button>
+    <button class="sb-btn" onclick="go('pricing',this)"><i class="ti ti-tag"></i> الباقات والتسعير</button>
+    <button class="sb-btn" onclick="go('activity',this)"><i class="ti ti-list-details"></i> سجل النشاط</button>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av">ك</div>
+    <div><div class="sb-uname">كريم مصطفى</div><div class="sb-urole">Super Admin</div></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Dashboard</div>
+    <div class="tb-right">
+      <!-- NOTIFICATIONS -->
+      <div class="tb-icon notif-wrap" id="notif-btn" onclick="toggleNotif()">
+        <i class="ti ti-bell"></i>
+        <div class="tb-dot" id="notif-dot"></div>
+        <div class="notif-dropdown" id="notif-dropdown">
+          <div class="notif-head"><span>الإشعارات</span><a onclick="markAllRead(event)">تحديد الكل كمقروء</a></div>
+          <div id="notif-list"></div>
+        </div>
+      </div>
+      <button class="tb-btn tb-g btn-sm" onclick="handleExport()"><i class="ti ti-download"></i> تصدير</button>
+      <button class="tb-btn tb-p btn-sm" onclick="go('new-tenant',document.querySelector('[onclick*=new-tenant]'))"><i class="ti ti-plus"></i> Tenant جديد</button>
+    </div>
+  </div>
+  <!-- ===== DASHBOARD ===== -->
+<div class="page on" id="p-dashboard">
+  <div class="ph">
+    <div><div class="ph-t">أهلاً، كريم 👋</div><div class="ph-s">الأحد 14 يونيو 2025 — كل حاجة تمام</div></div>
+  </div>
+  <div class="alrt aw"><i class="ti ti-alert-triangle"></i><span class="at">5 Tenants اشتراكاتهم بتنتهي خلال 7 أيام — <a style="font-weight:700;cursor:pointer" onclick="go('subscriptions',null)">راجعهم الآن</a></span></div>
+  <div class="g4" style="margin-bottom:22px">
+    <div class="stat-card"><div class="si" style="background:#EEF2FF"><i class="ti ti-building" style="font-size:19px;color:var(--p)"></i></div><div class="sv">14</div><div class="sl">Tenants نشطين</div><div class="sc up"><i class="ti ti-arrow-up"></i> 3 هذا الشهر</div><div class="sbar" style="background:linear-gradient(90deg,var(--p),var(--pm))"></div></div>
+    <div class="stat-card"><div class="si" style="background:#ECFEFF"><i class="ti ti-users" style="font-size:19px;color:var(--cy)"></i></div><div class="sv">847</div><div class="sl">إجمالي المستخدمين</div><div class="sc up"><i class="ti ti-arrow-up"></i> 62 هذا الأسبوع</div><div class="sbar" style="background:linear-gradient(90deg,var(--cy),#67E8F9)"></div></div>
+    <div class="stat-card"><div class="si" style="background:#FEF3C7"><i class="ti ti-clock" style="font-size:19px;color:var(--am)"></i></div><div class="sv" style="color:var(--am)">5</div><div class="sl">اشتراكات تنتهي قريب</div><div class="sc dn"><i class="ti ti-arrow-down"></i> خلال 7 أيام</div><div class="sbar" style="background:linear-gradient(90deg,var(--am),#FCD34D)"></div></div>
+    <div class="stat-card"><div class="si" style="background:#D1FAE5"><i class="ti ti-currency-pound" style="font-size:19px;color:var(--gr)"></i></div><div class="sv">42K</div><div class="sl">الإيرادات الشهرية</div><div class="sc up"><i class="ti ti-arrow-up"></i> +18% عن الشهر</div><div class="sbar" style="background:linear-gradient(90deg,var(--gr),#6EE7B7)"></div></div>
+  </div>
+  <div class="g2" style="margin-bottom:20px">
+    <div class="card">
+      <div class="ct">أحدث الـ Tenants <a onclick="go('tenants',null)">عرض الكل ←</a></div>
+      <div class="li"><div class="av av-sq" style="background:#4F46E5">TE</div><div class="lin"><div class="ln">TechCorp Egypt</div><div class="ls">Growth · 5 رومات · 48 موظف</div></div><div class="lr"><span class="pill pg">نشط</span><div style="font-size:10px;color:var(--t3);margin-top:3px">ينتهي 3/7</div></div></div>
+      <div class="li"><div class="av av-sq" style="background:#06B6D4">AN</div><div class="lin"><div class="ln">أكاديمية النخبة</div><div class="ls">Pro · 3 رومات · 120 طالب</div></div><div class="lr"><span class="pill pg">نشط</span><div style="font-size:10px;color:var(--t3);margin-top:3px">ينتهي 15/7</div></div></div>
+      <div class="li"><div class="av av-sq" style="background:#F59E0B">LI</div><div class="lin"><div class="ln">معهد اللغات</div><div class="ls">Starter · 2 روم · 200 طالب</div></div><div class="lr"><span class="pill pa">ينتهي قريب</span><div style="font-size:10px;color:var(--re);margin-top:3px">17/6</div></div></div>
+      <div class="li"><div class="av av-sq" style="background:#10B981">SF</div><div class="lin"><div class="ln">Smart Finance</div><div class="ls">Growth · 4 رومات · 31 موظف</div></div><div class="lr"><span class="pill pg">نشط</span><div style="font-size:10px;color:var(--t3);margin-top:3px">ينتهي 1/8</div></div></div>
+    </div>
+    <!-- الرسم البياني الأسبوعي -->
+    <div class="card">
+      <div class="ct">الإيرادات — آخر 7 أيام</div>
+      <canvas id="weeklyChart" height="80" style="max-height:80px; width:100%;"></canvas>
+      <div class="dv"></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2)">
+        <span>المجموع: <strong style="color:var(--t1)">14,200 جنيه</strong></span>
+        <span>أعلى يوم: <strong style="color:var(--p)">الخميس</strong></span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">توزيع الباقات</div>
+    <div style="display:flex;gap:0;height:14px;border-radius:7px;overflow:hidden;margin-bottom:10px">
+      <div style="flex:4;background:var(--p)" title="Growth (4)"></div>
+      <div style="flex:5;background:var(--cy)" title="Pro (5)"></div>
+      <div style="flex:3;background:var(--am)" title="Starter (3)"></div>
+      <div style="flex:2;background:var(--gr)" title="Enterprise (2)"></div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <span style="font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--p);display:inline-block"></span> Growth (4)</span>
+      <span style="font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--cy);display:inline-block"></span> Pro (5)</span>
+      <span style="font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--am);display:inline-block"></span> Starter (3)</span>
+      <span style="font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--gr);display:inline-block"></span> Enterprise (2)</span>
+    </div>
+  </div>
+</div>
+<!-- ===== TENANTS (مع تعديل openProfile عشان أي Tenant يفتح) ===== -->
+<div class="page" id="p-tenants">
+  <div class="ph">
+    <div><div class="ph-t">كل الـ Tenants</div><div class="ph-s">14 شركة وأكاديمية مفعّلة</div></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-g btn-sm" onclick="exportTenantsCSV()"><i class="ti ti-download"></i> تصدير CSV</button>
+      <button class="btn btn-p btn-sm" onclick="go('new-tenant',document.querySelector('[onclick*=new-tenant]'))"><i class="ti ti-plus"></i> Tenant جديد</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center">
+    <button class="chip on" data-filter="all">الكل (5)</button>
+    <button class="chip" data-filter="active">نشط</button>
+    <button class="chip" data-filter="expiring">ينتهي قريب</button>
+    <div style="flex:1"></div>
+    <input id="tenant-search" style="padding:8px 13px;border:1px solid var(--bd);border-radius:var(--rsm);font-size:13px;font-family:'Cairo',sans-serif;outline:none;min-width:220px" placeholder="🔍 ابحث باسم الـ Tenant..." oninput="filterTenants()">
+  </div>
+  <div class="g3" id="tenants-grid">
+    <div class="tc" data-status="active" data-name="techcorp egypt" onclick="openProfile('TechCorp Egypt')"><div class="tc-stripe" style="background:#4F46E5"></div><div class="tc-body"><div class="tc-top"><div class="tc-logo" style="background:#4F46E5">TE</div><div><div class="tc-name">TechCorp Egypt</div><div class="tc-type">شركة تقنية · Growth</div></div><span class="pill pg" style="margin-right:auto">نشط</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag">5 رومات</span><span class="tag">48 موظف</span><span class="tag">ينتهي 3/7</span></div></div><div class="tc-stats"><div class="tc-stat"><strong>48</strong> موظف</div><div class="tc-stat"><strong>142</strong> ملف</div><div class="tc-stat"><strong>1,200</strong> ج/شهر</div></div></div>
+    <div class="tc" data-status="active" data-name="أكاديمية النخبة" onclick="openProfile('أكاديمية النخبة')"><div class="tc-stripe" style="background:#06B6D4"></div><div class="tc-body"><div class="tc-top"><div class="tc-logo" style="background:#06B6D4">AN</div><div><div class="tc-name">أكاديمية النخبة</div><div class="tc-type">تعليم · Pro</div></div><span class="pill pg" style="margin-right:auto">نشط</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag">3 رومات</span><span class="tag">120 طالب</span><span class="tag">ينتهي 15/7</span></div></div><div class="tc-stats"><div class="tc-stat"><strong>120</strong> طالب</div><div class="tc-stat"><strong>89</strong> ملف</div><div class="tc-stat"><strong>2,500</strong> ج/شهر</div></div></div>
+    <div class="tc" data-status="expiring" data-name="معهد اللغات" onclick="openProfile('معهد اللغات')"><div class="tc-stripe" style="background:#F59E0B"></div><div class="tc-body"><div class="tc-top"><div class="tc-logo" style="background:#F59E0B">LI</div><div><div class="tc-name">معهد اللغات</div><div class="tc-type">تعليم لغات · Starter</div></div><span class="pill pa" style="margin-right:auto">ينتهي قريب</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag">2 روم</span><span class="tag">200 طالب</span><span class="tag">ينتهي 17/6</span></div></div><div class="tc-stats"><div class="tc-stat"><strong>200</strong> طالب</div><div class="tc-stat"><strong>34</strong> ملف</div><div class="tc-stat"><strong>500</strong> ج/شهر</div></div></div>
+    <div class="tc" data-status="active" data-name="smart finance" onclick="openProfile('Smart Finance')"><div class="tc-stripe" style="background:#10B981"></div><div class="tc-body"><div class="tc-top"><div class="tc-logo" style="background:#10B981">SF</div><div><div class="tc-name">Smart Finance</div><div class="tc-type">مالية · Growth</div></div><span class="pill pg" style="margin-right:auto">نشط</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag">4 رومات</span><span class="tag">31 موظف</span></div></div><div class="tc-stats"><div class="tc-stat"><strong>31</strong> موظف</div><div class="tc-stat"><strong>56</strong> ملف</div><div class="tc-stat"><strong>1,200</strong> ج/شهر</div></div></div>
+    <div class="tc" data-status="active" data-name="أكاديمية كود" onclick="openProfile('أكاديمية كود')"><div class="tc-stripe" style="background:#EC4899"></div><div class="tc-body"><div class="tc-top"><div class="tc-logo" style="background:#EC4899">AC</div><div><div class="tc-name">أكاديمية كود</div><div class="tc-type">برمجة · Pro</div></div><span class="pill pg" style="margin-right:auto">نشط</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag">8 رومات</span><span class="tag">340 طالب</span></div></div><div class="tc-stats"><div class="tc-stat"><strong>340</strong> طالب</div><div class="tc-stat"><strong>210</strong> ملف</div><div class="tc-stat"><strong>2,500</strong> ج/شهر</div></div></div>
+    <div class="tc" style="border:2px dashed var(--bd);box-shadow:none" onclick="go('new-tenant',document.querySelector('[onclick*=new-tenant]'))"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;text-align:center;cursor:pointer"><i class="ti ti-plus" style="font-size:30px;color:var(--t3);display:block;margin-bottom:8px"></i><div style="font-size:14px;font-weight:600;color:var(--t2)">Tenant جديد</div><div style="font-size:11px;color:var(--t3);margin-top:3px">شركة أو أكاديمية</div></div></div>
+  </div>
+  <div id="tenants-empty" style="display:none">
+    <div class="empty"><i class="ti ti-building-off"></i><h3>مفيش نتائج</h3><p>جرب تغير كلمة البحث أو الفلتر</p></div>
+  </div>
+</div>
+<!-- ===== TENANT PROFILE (ديناميكي) ===== -->
+<div class="page" id="p-tenant-profile">
+  <div class="ph">
+    <div><button class="btn btn-g btn-sm" onclick="go('tenants',document.querySelector('[onclick*=tenants]'))"><i class="ti ti-arrow-right"></i> رجوع</button></div>
+  </div>
+  <div class="profile-header">
+    <div class="profile-logo" style="background:#4F46E5" id="profile-logo">TE</div>
+    <div class="profile-info">
+      <div class="profile-name" id="profile-name">TechCorp Egypt</div>
+      <div class="profile-meta" id="profile-meta">شركة تقنية · Growth · <strong style="color:var(--gr)">نشط</strong> · ينتهي 3 يوليو 2025</div>
+      <div style="margin-top:8px;display:flex;gap:8px" id="profile-contact">
+        <span class="tag">admin@techcorp.eg</span>
+        <span class="tag">+201000000001</span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button class="btn btn-g btn-sm"><i class="ti ti-edit"></i> تعديل</button>
+      <button class="btn btn-p btn-sm"><i class="ti ti-refresh"></i> تجديد</button>
+      <button class="btn btn-sm" style="background:var(--aml);color:#92400E;border:none" onclick="confirmAction('تعليق الحساب','هل تريد تعليق هذا الـ Tenant؟ لن يتمكنوا من الدخول حتى تُعيد التفعيل.','warn',()=>showToast('تم تعليق الحساب','warn'))"><i class="ti ti-player-pause"></i> تعليق</button>
+      <button class="btn btn-r btn-sm" onclick="confirmAction('حذف الـ Tenant','سيتم حذف هذا الـ Tenant وكل بياناته نهائياً. هذا الإجراء لا يمكن التراجع عنه.','danger',()=>showToast('تم الحذف','error'))"><i class="ti ti-trash"></i> حذف</button>
+    </div>
+  </div>
+  <div class="g4" style="margin-bottom:20px">
+    <div class="stat-card"><div class="si" style="background:#EEF2FF"><i class="ti ti-users" style="font-size:19px;color:var(--p)"></i></div><div class="sv" id="stat-users">48</div><div class="sl">موظفين نشطين</div><div class="sbar" style="background:var(--p)"></div></div>
+    <div class="stat-card"><div class="si" style="background:#D1FAE5"><i class="ti ti-files" style="font-size:19px;color:var(--gr)"></i></div><div class="sv" id="stat-files">142</div><div class="sl">ملفات مرفوعة</div><div class="sbar" style="background:var(--gr)"></div></div>
+    <div class="stat-card"><div class="si" style="background:#ECFEFF"><i class="ti ti-door" style="font-size:19px;color:var(--cy)"></i></div><div class="sv" id="stat-rooms">5</div><div class="sl">رومات نشطة</div><div class="sbar" style="background:var(--cy)"></div></div>
+    <div class="stat-card"><div class="si" style="background:#FEF3C7"><i class="ti ti-currency-pound" style="font-size:19px;color:var(--am)"></i></div><div class="sv" id="stat-payments">7,200</div><div class="sl">إجمالي المدفوع</div><div class="sbar" style="background:var(--am)"></div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="switchTab(this,'tab-users')">المستخدمين</button>
+    <button class="tab" onclick="switchTab(this,'tab-rooms')">الرومات</button>
+    <button class="tab" onclick="switchTab(this,'tab-payments')">المدفوعات</button>
+    <button class="tab" onclick="switchTab(this,'tab-settings')">الإعدادات</button>
+  </div>
+  <div class="tab-panel on" id="tab-users">
+    <div class="card">
+      <div class="ct">المستخدمين <span style="font-size:12px;color:var(--t3);font-weight:400" id="user-count">(48)</span></div>
+      <table class="tbl">
+        <thead><tr><th>الاسم</th><th>الإيميل</th><th>الدور</th><th>آخر دخول</th><th>الحالة</th></tr></thead>
+        <tbody id="users-table-body">
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:#4F46E5">أح</div> أحمد محمود</div></td><td style="color:var(--t2)">ahmed@techcorp.eg</td><td><span class="pill pb">Admin</span></td><td style="color:var(--t3)">منذ ساعة</td><td><span class="pill pg">نشط</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:#06B6D4">سا</div> سارة علي</div></td><td style="color:var(--t2)">sara@techcorp.eg</td><td><span class="pill pgy">موظف</span></td><td style="color:var(--t3)">أمس</td><td><span class="pill pg">نشط</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:#10B981">مح</div> محمد حسن</div></td><td style="color:var(--t2)">mo@techcorp.eg</td><td><span class="pill pgy">موظف</span></td><td style="color:var(--t3)">منذ 3 أيام</td><td><span class="pill pr">موقوف</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:#F59E0B">نا</div> نادية عمر</div></td><td style="color:var(--t2)">nadia@techcorp.eg</td><td><span class="pill pgy">موظف</span></td><td style="color:var(--t3)">منذ 5 أيام</td><td><span class="pill pg">نشط</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:#EC4899">خا</div> خالد يوسف</div></td><td style="color:var(--t2)">khalid@techcorp.eg</td><td><span class="pill pb">Admin</span></td><td style="color:var(--t3)">منذ 6 ساعات</td><td><span class="pill pg">نشط</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+ <div class="tab-panel" id="tab-rooms">
+    <div class="card">
+      <div class="ct">الرومات (5)</div>
+      <table class="tbl">
+        <thead><tr><th>اسم الروم</th><th>الأعضاء</th><th>الملفات</th><th>آخر نشاط</th></tr></thead>
+        <tbody>
+          <tr><td><strong>روم الإدارة</strong></td><td>12 عضو</td><td>34 ملف</td><td style="color:var(--t3)">منذ ساعتين</td></tr>
+          <tr><td><strong>روم التسويق</strong></td><td>8 أعضاء</td><td>56 ملف</td><td style="color:var(--t3)">أمس</td></tr>
+          <tr><td><strong>روم التطوير</strong></td><td>15 عضو</td><td>89 ملف</td><td style="color:var(--t3)">منذ ساعة</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-payments">
+    <div class="card">
+      <div class="ct">سجل المدفوعات</div>
+      <table class="tbl">
+        <thead><tr><th>التاريخ</th><th>الباقة</th><th>المدة</th><th>المبلغ</th><th>الحالة</th></tr></thead>
+        <tbody>
+          <tr><td>14 يناير 2025</td><td>Growth</td><td>6 شهور</td><td><strong>7,200 ج</strong></td><td><span class="pill pg">مدفوع</span></td></tr>
+          <tr><td>14 يوليو 2024</td><td>Starter</td><td>6 شهور</td><td><strong>3,000 ج</strong></td><td><span class="pill pg">مدفوع</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-settings">
+    <div class="g2">
+      <div class="card">
+        <div class="ct">إعدادات الـ Tenant</div>
+        <div class="tog-row"><div><div class="tn2">تفعيل الحساب</div><div class="ts2">تفعيل أو تعليق الوصول</div></div><button class="tog"></button></div>
+        <div class="tog-row"><div><div class="tn2">One Device Policy</div><div class="ts2">منع الدخول من أكثر من جهاز</div></div><button class="tog"></button></div>
+        <div class="tog-row"><div><div class="tn2">Watermark</div><div class="ts2">علامة مائية على المحتوى</div></div><button class="tog off"></button></div>
+      </div>
+      <div class="card">
+        <div class="ct">تغيير الباقة</div>
+        <div class="form-group"><label class="form-label">الباقة الحالية</label><select class="form-select"><option>Starter — 500 ج/شهر</option><option selected>Growth — 1,200 ج/شهر</option><option>Pro — 2,500 ج/شهر</option><option>Enterprise</option></select></div>
+        <button class="btn btn-p" onclick="showToast('تم تحديث الباقة بنجاح','success')"><i class="ti ti-check"></i> حفظ التغييرات</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== NEW TENANT (مع معاينة الصورة) ===== -->
+<div class="page" id="p-new-tenant">
+  <div class="ph"><div><div class="ph-t">Tenant جديد</div><div class="ph-s">إعداد شركة أو أكاديمية في دقيقتين</div></div></div>
+  <div class="step-dots" id="step-dots">
+    <div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot"></div><div class="step-dot"></div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ct">بيانات الشركة</div>
+        <div class="form-group"><label class="form-label">الاسم الرسمي</label><input class="form-input" placeholder="مثال: أكاديمية النخبة" value="TechCorp Egypt"></div>
+        <div class="form-group"><label class="form-label">نوع النشاط</label><select class="form-select"><option>شركة خاصة</option><option>أكاديمية / مركز تدريب</option><option>مؤسسة تعليمية</option><option>أخرى</option></select></div>
+        <div class="form-group"><label class="form-label">إيميل الـ Admin</label><input class="form-input" type="email" value="admin@techcorp.eg"></div>
+        <div class="form-group"><label class="form-label">رقم الواتساب</label><input class="form-input" placeholder="+201XXXXXXXXX"></div>
+      </div>
+      <div class="card">
+        <div class="ct">الهوية البصرية</div>
+        <div class="form-group">
+          <label class="form-label">رفع اللوجو</label>
+          <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+            <div id="logoPreviewContainer" style="width:80px; height:80px; border-radius:12px; border:2px dashed var(--bd); display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--sf); flex-shrink:0;">
+              <i class="ti ti-photo" style="font-size:28px; color:var(--t3);"></i>
+              <img id="logoPreview" style="width:100%; height:100%; object-fit:cover; display:none;" />
+            </div>
+            <div style="flex:1;">
+              <input type="file" id="logoInput" accept="image/png, image/jpeg, image/svg+xml" style="display:none;" onchange="previewLogo(event)">
+              <button type="button" class="btn btn-g" onclick="document.getElementById('logoInput').click()" style="width:100%; justify-content:center;">
+                <i class="ti ti-upload"></i> اختر صورة (PNG, JPG, SVG)
+              </button>
+              <div style="font-size:11px; color:var(--t3); margin-top:5px;">الحد الأقصى 2 ميجا</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">لون العلامة التجارية</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div style="width:30px;height:30px;border-radius:50%;background:#4F46E5;border:3px solid var(--p);cursor:pointer"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#06B6D4;cursor:pointer"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#10B981;cursor:pointer"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#F59E0B;cursor:pointer"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#EF4444;cursor:pointer"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#EC4899;cursor:pointer"></div>
+            <input type="color" style="width:30px;height:30px;border-radius:50%;border:1px solid var(--bd);cursor:pointer;padding:1px">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ct">الباقة</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="border:1.5px solid var(--bd);border-radius:var(--rsm);padding:12px;cursor:pointer" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--bd)'"><div style="display:flex;justify-content:space-between"><span style="font-weight:700">Starter</span><span style="color:var(--p);font-weight:800">500 ج/شهر</span></div><div style="font-size:11px;color:var(--t2);margin-top:3px">روم واحدة · 100 مستخدم</div></div>
+          <div style="border:2px solid var(--p);border-radius:var(--rsm);padding:12px;cursor:pointer;background:var(--pl)"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;color:var(--p)">Growth ✓</span><span style="color:var(--p);font-weight:800">1,200 ج/شهر</span></div><div style="font-size:11px;color:var(--t2);margin-top:3px">10 رومات · 500 مستخدم · Anti-Leak</div></div>
+          <div style="border:1.5px solid var(--bd);border-radius:var(--rsm);padding:12px;cursor:pointer" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--bd)'"><div style="display:flex;justify-content:space-between"><span style="font-weight:700">Pro</span><span style="color:var(--p);font-weight:800">2,500 ج/شهر</span></div><div style="font-size:11px;color:var(--t2);margin-top:3px">غير محدود · White Label</div></div>
+        </div>
+        <div class="form-group" style="margin-top:14px"><label class="form-label">تاريخ بدء الاشتراك</label><input class="form-input" type="date" value="2025-06-14"></div>
+        <div class="form-group"><label class="form-label">مدة الاشتراك</label><select class="form-select"><option>شهر واحد</option><option>3 شهور</option><option selected>6 شهور</option><option>سنة كاملة (-20%)</option></select></div>
+      </div>
+      <div class="card" style="background:var(--pl);border-color:#C7D2FE;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:700;color:var(--pd);margin-bottom:10px">ملخص الطلب</div>
+        <div class="li" style="border-color:#C7D2FE"><span style="font-size:13px;color:var(--pd)">TechCorp Egypt</span><span style="margin-right:auto;font-weight:700;color:var(--p)">Growth</span></div>
+        <div class="li" style="border-color:#C7D2FE"><span style="font-size:13px;color:var(--pd)">المدة</span><span style="margin-right:auto;font-weight:700;color:var(--p)">6 شهور</span></div>
+        <div class="li" style="border-color:#C7D2FE;border:none"><span style="font-size:14px;font-weight:800;color:var(--pd)">الإجمالي</span><span style="margin-right:auto;font-size:18px;font-weight:800;color:var(--p)">7,200 جنيه</span></div>
+      </div>
+      <button class="btn btn-p" style="width:100%;justify-content:center;padding:13px" onclick="showToast('تم إنشاء الـ Tenant وإرسال دعوة الـ Admin بنجاح! 🎉','success')"><i class="ti ti-check"></i> إنشاء الـ Tenant + إرسال دعوة الـ Admin</button>
+    </div>
+  </div>
+</div>
+<!-- ===== REVENUE (مع الرسم البياني الشهري) ===== -->
+<div class="page" id="p-revenue">
+  <div class="ph">
+    <div><div class="ph-t">الإيرادات</div><div class="ph-s">يونيو 2025 — 42,000 جنيه هذا الشهر</div></div>
+    <button class="btn btn-g btn-sm" onclick="exportRevenueCSV()"><i class="ti ti-download"></i> تصدير CSV</button>
+  </div>
+  <div class="g4" style="margin-bottom:20px">
+    <div class="stat-card"><div class="si" style="background:#D1FAE5"><i class="ti ti-currency-pound" style="font-size:19px;color:var(--gr)"></i></div><div class="sv">42K</div><div class="sl">هذا الشهر</div><div class="sc up"><i class="ti ti-arrow-up"></i>+18%</div></div>
+    <div class="stat-card"><div class="si" style="background:#EEF2FF"><i class="ti ti-calendar-month" style="font-size:19px;color:var(--p)"></i></div><div class="sv">35.6K</div><div class="sl">الشهر الماضي</div><div class="sc dn"><i class="ti ti-minus"></i>الأساس</div></div>
+    <div class="stat-card"><div class="si" style="background:#ECFEFF"><i class="ti ti-trending-up" style="font-size:19px;color:var(--cy)"></i></div><div class="sv">480K</div><div class="sl">إجمالي السنة</div><div class="sc up"><i class="ti ti-arrow-up"></i>+42%</div></div>
+    <div class="stat-card"><div class="si" style="background:#FEF3C7"><i class="ti ti-users" style="font-size:19px;color:var(--am)"></i></div><div class="sv">3,000</div><div class="sl">متوسط / Tenant</div><div class="sc up"><i class="ti ti-arrow-up"></i>+8%</div></div>
+  </div>
+  <div class="card">
+    <div class="ct">الإيرادات الشهرية — 2025</div>
+    <canvas id="monthlyChart" height="120" style="max-height:120px; width:100%;"></canvas>
+  </div>
+</div>
+
+<!-- ===== SUBSCRIPTIONS ===== -->
+<div class="page" id="p-subscriptions">
+  <div class="ph"><div><div class="ph-t">الاشتراكات</div><div class="ph-s">متابعة انتهاء الاشتراكات وتجديدها</div></div></div>
+  <div class="alrt aw"><i class="ti ti-alert-triangle"></i><span class="at">5 Tenants اشتراكاتهم تنتهي خلال 7 أيام — تواصل معهم فوراً</span></div>
+  <div class="card">
+    <table class="tbl">
+      <thead><tr><th>الـ Tenant</th><th>الباقة</th><th>تاريخ الانتهاء</th><th>الإيراد الشهري</th><th>الحالة</th><th>إجراء</th></tr></thead>
+      <tbody>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sq av-sm" style="background:#F59E0B">LI</div><div><div style="font-size:13px;font-weight:600">معهد اللغات</div><div style="font-size:11px;color:var(--t3)">200 طالب</div></div></div></td><td><span class="pill pgy">Starter</span></td><td><strong style="color:var(--re)">17 يونيو 2025</strong></td><td>500 جنيه</td><td><span class="pill pr">3 أيام</span></td><td><button class="btn btn-p btn-xs" onclick="confirmAction('تجديد اشتراك معهد اللغات','سيتم تجديد الاشتراك لمدة شهر بتكلفة 500 جنيه.','warn',()=>showToast('تم تجديد اشتراك معهد اللغات','success'))">تجديد</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sq av-sm" style="background:#8B5CF6">MD</div><div><div style="font-size:13px;font-weight:600">مركز الدكتور أحمد</div><div style="font-size:11px;color:var(--t3)">80 طالب</div></div></div></td><td><span class="pill pb">Growth</span></td><td><strong style="color:var(--am)">19 يونيو 2025</strong></td><td>1,200 جنيه</td><td><span class="pill pa">5 أيام</span></td><td><button class="btn btn-p btn-xs" onclick="confirmAction('تجديد اشتراك مركز الدكتور أحمد','سيتم تجديد الاشتراك لمدة شهر بتكلفة 1,200 جنيه.','warn',()=>showToast('تم تجديد اشتراك مركز الدكتور أحمد','success'))">تجديد</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sq av-sm" style="background:#4F46E5">TE</div><div><div style="font-size:13px;font-weight:600">TechCorp Egypt</div><div style="font-size:11px;color:var(--t3)">48 موظف</div></div></div></td><td><span class="pill pb">Growth</span></td><td>3 يوليو 2025</td><td>1,200 جنيه</td><td><span class="pill pg">19 يوم</span></td><td><button class="btn btn-g btn-xs" onclick="openProfile('TechCorp Egypt')">تفاصيل</button></td></tr>
+        <tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sq av-sm" style="background:#06B6D4">AN</div><div><div style="font-size:13px;font-weight:600">أكاديمية النخبة</div><div style="font-size:11px;color:var(--t3)">120 طالب</div></div></div></td><td><span class="pill pg" style="background:#D1FAE5;color:#065F46">Pro</span></td><td>15 يوليو 2025</td><td>2,500 جنيه</td><td><span class="pill pg">31 يوم</span></td><td><button class="btn btn-g btn-xs" onclick="openProfile('أكاديمية النخبة')">تفاصيل</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PRICING ===== -->
+<div class="page" id="p-pricing">
+  <div class="ph"><div><div class="ph-t">الباقات والتسعير</div><div class="ph-s">إدارة وتعديل باقات Sub Pay</div></div><button class="btn btn-p btn-sm"><i class="ti ti-plus"></i> باقة جديدة</button></div>
+  <div class="g4">
+    <div class="price-card"><div class="pn">Starter</div><div class="pa2">500</div><div class="pp">جنيه / شهر</div><div class="pdv"></div><div class="pf">روم واحدة</div><div class="pf">100 مستخدم</div><div class="pf">PDF + فيديو</div><div class="pf">إشعارات</div><div class="pf">One Device Policy</div><button class="btn btn-g" style="width:100%;justify-content:center;margin-top:14px" onclick="showToast('فتح تعديل باقة Starter','')"><i class="ti ti-edit"></i> تعديل</button></div>
+    <div class="price-card feat"><div class="pb2">⭐ الأكثر مبيعاً</div><div class="pn">Growth</div><div class="pa2">1,200</div><div class="pp">جنيه / شهر</div><div class="pdv"></div><div class="pf">10 رومات</div><div class="pf">500 مستخدم</div><div class="pf">Watermark متقدم</div><div class="pf">Analytics</div><div class="pf">امتحانات وكويزات</div><button class="btn btn-p" style="width:100%;justify-content:center;margin-top:14px" onclick="showToast('فتح تعديل باقة Growth','')"><i class="ti ti-edit"></i> تعديل</button></div>
+    <div class="price-card"><div class="pn">Pro</div><div class="pa2">2,500</div><div class="pp">جنيه / شهر</div><div class="pdv"></div><div class="pf">غير محدود</div><div class="pf">White Label</div><div class="pf">Payments</div><div class="pf">Live Sessions</div><button class="btn btn-g" style="width:100%;justify-content:center;margin-top:14px" onclick="showToast('فتح تعديل باقة Pro','')"><i class="ti ti-edit"></i> تعديل</button></div>
+    <div class="price-card" style="background:var(--ink);border-color:var(--ink2)"><div class="pn" style="color:#fff">Enterprise</div><div class="pa2" style="color:var(--cy)">حسب الاتفاق</div><div class="pp" style="color:rgba(255,255,255,.4)">سعر مخصص</div><div class="pdv" style="background:rgba(255,255,255,.1)"></div><div class="pf" style="color:rgba(255,255,255,.7)">كل Pro</div><div class="pf" style="color:rgba(255,255,255,.7)">AI Assistant</div><div class="pf" style="color:rgba(255,255,255,.7)">دعم 24/7</div><button class="btn" style="width:100%;justify-content:center;margin-top:14px;background:var(--cy);color:#fff"><i class="ti ti-edit"></i> تعديل</button></div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="page" id="p-settings">
+  <div class="ph"><div><div class="ph-t">إعدادات النظام</div><div class="ph-s">Sub Pay Platform Settings</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">إعدادات عامة</div>
+      <div class="form-group"><label class="form-label">اسم المنصة</label><input class="form-input" value="Sub Pay"></div>
+      <div class="form-group"><label class="form-label">إيميل الدعم الفني</label><input class="form-input" value="support@subpay.app"></div>
+      <div class="form-group"><label class="form-label">رقم الواتساب للدعم</label><input class="form-input" value="+201000000000"></div>
+      <button class="btn btn-p" onclick="showToast('تم حفظ الإعدادات بنجاح','success')"><i class="ti ti-device-floppy"></i> حفظ التغييرات</button>
+    </div>
+    <div class="card">
+      <div class="ct">إشعارات النظام</div>
+      <div class="tog-row"><div><div class="tn2">إشعار انتهاء الاشتراك</div><div class="ts2">7 أيام قبل الانتهاء</div></div><button class="tog"></button></div>
+      <div class="tog-row"><div><div class="tn2">إشعار Tenant جديد</div><div class="ts2">عند إنشاء حساب جديد</div></div><button class="tog"></button></div>
+      <div class="tog-row"><div><div class="tn2">تقرير أسبوعي</div><div class="ts2">كل يوم إثنين على إيميلك</div></div><button class="tog"></button></div>
+      <div class="tog-row"><div><div class="tn2">تنبيهات الأمان</div><div class="ts2">محاولات اختراق عبر الـ Tenants</div></div><button class="tog off"></button></div>
+    </div>
+  </div>
+</div>
+<!-- ===== ACTIVITY LOG ===== -->
+  <div class="page" id="p-activity">
+    <div class="ph"><div><div class="ph-t">سجل النشاط</div><div class="ph-s">كل العمليات اللي اتعملت على المنصة</div></div><button class="btn btn-g btn-sm"><i class="ti ti-download"></i> تصدير</button></div>
+    <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+      <button class="chip on">الكل</button>
+      <button class="chip">Tenants</button>
+      <button class="chip">اشتراكات</button>
+      <button class="chip">إعدادات</button>
+      <button class="chip">تسجيل دخول</button>
+    </div>
+    <div class="card">
+      <div class="log-item"><div class="log-ic" style="background:#D1FAE5"><i class="ti ti-plus" style="color:var(--gr)"></i></div><div class="log-body"><strong>تم إنشاء Tenant جديد — TechCorp Egypt</strong><span>بواسطة كريم مصطفى · Growth · 6 شهور</span></div><div class="log-time">منذ دقيقتين</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#EEF2FF"><i class="ti ti-refresh" style="color:var(--p)"></i></div><div class="log-body"><strong>تجديد اشتراك — أكاديمية النخبة</strong><span>تجديد باقة Pro لمدة 6 شهور · 15,000 جنيه</span></div><div class="log-time">منذ ساعة</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#FEF3C7"><i class="ti ti-alert-triangle" style="color:var(--am)"></i></div><div class="log-body"><strong>تحذير — اشتراك معهد اللغات ينتهي قريب</strong><span>ينتهي خلال 3 أيام — لم يتم التجديد بعد</span></div><div class="log-time">منذ 3 ساعات</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#ECFEFF"><i class="ti ti-settings" style="color:var(--cy)"></i></div><div class="log-body"><strong>تعديل إعدادات النظام</strong><span>تم تفعيل إشعارات التقرير الأسبوعي</span></div><div class="log-time">أمس 11:30 م</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#FEE2E2"><i class="ti ti-player-pause" style="color:var(--re)"></i></div><div class="log-body"><strong>تعليق حساب — مركز التميز</strong><span>بواسطة كريم مصطفى · سبب: عدم السداد</span></div><div class="log-time">أمس 9:00 م</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#D1FAE5"><i class="ti ti-login" style="color:var(--gr)"></i></div><div class="log-body"><strong>تسجيل دخول ناجح</strong><span>كريم مصطفى · Super Admin · Chrome / Windows</span></div><div class="log-time">أمس 8:55 م</div></div>
+      <div class="log-item"><div class="log-ic" style="background:#EEF2FF"><i class="ti ti-tag" style="color:var(--p)"></i></div><div class="log-body"><strong>تعديل باقة Growth</strong><span>تم تغيير الحد الأقصى للمستخدمين من 300 إلى 500</span></div><div class="log-time">14 يونيو 2025</div></div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<script src="app.js"></script>
+</body>
+</html>
