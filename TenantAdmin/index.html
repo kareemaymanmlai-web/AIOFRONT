@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sub Pay — Tenant Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 
+     SIDEBAR
+ -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-brand">
+      <div class="sb-logo-img">TE</div>
+      <div>
+        <div class="sb-company">TechCorp Egypt</div>
+        <div class="sb-plan">باقة Growth · نشطة</div>
+      </div>
+    </div>
+    <div class="sb-user-row">
+      <div class="sb-av">أح</div>
+      <div>
+        <div class="sb-uname">أحمد مصطفى</div>
+        <div class="sb-urole">Tenant Admin</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">الرئيسية</div>
+    <button class="sb-btn on" onclick="go('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">إدارة المحتوى</div>
+    <button class="sb-btn" onclick="go('rooms',this)"><i class="ti ti-layout-grid"></i> الرومات</button>
+    <button class="sb-btn" onclick="go('files',this)"><i class="ti ti-files"></i> الملفات</button>
+    <button class="sb-btn" onclick="go('calendar',this)"><i class="ti ti-calendar"></i> التقويم والمواعيد</button>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">إدارة الفريق</div>
+    <button class="sb-btn" onclick="go('invite',this)"><i class="ti ti-user-plus"></i> دعوة موظف</button>
+    <button class="sb-btn" onclick="go('members',this)"><i class="ti ti-users"></i> الموظفين</button>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">التواصل</div>
+    <button class="sb-btn" onclick="go('notifications',this)">
+      <i class="ti ti-bell"></i> الإشعارات
+      <span class="sb-badge">5</span>
+    </button>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">التحليلات والأمان</div>
+    <button class="sb-btn" onclick="go('analytics',this)"><i class="ti ti-chart-bar"></i> التحليلات</button>
+    <button class="sb-btn" onclick="go('security',this)"><i class="ti ti-shield"></i> الأمان</button>
+  </div>
+
+  <div class="sb-sect">
+    <div class="sb-lbl">الإعدادات</div>
+    <button class="sb-btn" onclick="go('profile',this)"><i class="ti ti-building-store"></i> ملف الشركة</button>
+    <button class="sb-btn" onclick="go('subscription',this)"><i class="ti ti-credit-card"></i> اشتراكي</button>
+  </div>
+</nav>
+
+<!-- 
+     MAIN CONTENT
+ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Dashboard</div>
+    <div class="tb-right">
+      <div class="tb-icon">
+        <i class="ti ti-bell"></i>
+        <div class="tb-dot"></div>
+      </div>
+      <button class="btn btn-g btn-sm" onclick="go('invite', document.querySelector('[onclick*=invite]'))">
+        <i class="ti ti-user-plus"></i> دعوة موظف
+      </button>
+      <button class="btn btn-p btn-sm" onclick="go('rooms', document.querySelector('[onclick*=rooms]'))">
+        <i class="ti ti-plus"></i> روم جديدة
+      </button>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: DASHBOARD
+   -->
+  <div class="page on" id="p-dashboard">
+    <div class="ph">
+      <div>
+        <div class="ph-t">أهلاً، أحمد 👋</div>
+        <div class="ph-s">TechCorp Egypt · الأحد 14 يونيو 2025</div>
+      </div>
+    </div>
+
+    <div class="alrt aw">
+      <i class="ti ti-alert-triangle"></i>
+      <span class="at">
+        2 موظف اشتراكهم ينتهي هذا الأسبوع —
+        <a style="font-weight:700;cursor:pointer" onclick="go('members',null)">راجع الموظفين</a>
+      </span>
+    </div>
+
+    <div class="g4" style="margin-bottom:20px">
+      <div class="stat-card">
+        <div class="si" style="background:#EEF2FF"><i class="ti ti-users" style="font-size:18px;color:var(--p)"></i></div>
+        <div class="sv">48</div>
+        <div class="sl">الموظفين</div>
+        <div class="sc up"><i class="ti ti-arrow-up"></i> 3 جدد</div>
+        <div class="sbar" style="background:var(--p)"></div>
+      </div>
+      <div class="stat-card">
+        <div class="si" style="background:#ECFEFF"><i class="ti ti-layout-grid" style="font-size:18px;color:var(--cy)"></i></div>
+        <div class="sv">5</div>
+        <div class="sl">الرومات النشطة</div>
+        <div class="sc" style="color:var(--t3)">كل الرومات نشطة</div>
+        <div class="sbar" style="background:var(--cy)"></div>
+      </div>
+      <div class="stat-card">
+        <div class="si" style="background:#D1FAE5"><i class="ti ti-files" style="font-size:18px;color:var(--gr)"></i></div>
+        <div class="sv">142</div>
+        <div class="sl">ملفات مشتركة</div>
+        <div class="sc up"><i class="ti ti-arrow-up"></i> 12 اليوم</div>
+        <div class="sbar" style="background:var(--gr)"></div>
+      </div>
+      <div class="stat-card">
+        <div class="si" style="background:#FEF3C7"><i class="ti ti-clock" style="font-size:18px;color:var(--am)"></i></div>
+        <div class="sv" style="color:var(--am)">2</div>
+        <div class="sl">اشتراكات منتهية قريب</div>
+        <div class="sc dn">هذا الأسبوع</div>
+        <div class="sbar" style="background:var(--am)"></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">الرومات <a onclick="go('rooms',null)">إدارة الكل ←</a></div>
+        <div class="li">
+          <div class="av av-sq" style="background:#EEF2FF;color:#3730A3;font-size:16px">🏢</div>
+          <div class="lin"><div class="ln">HR & السياسات</div><div class="ls">12 موظف · 18 ملف · قراءة فقط</div></div>
+          <span class="pill pg">نشطة</span>
+        </div>
+        <div class="li">
+          <div class="av av-sq" style="background:#ECFEFF;color:#0E7490;font-size:16px">📊</div>
+          <div class="lin"><div class="ln">Sales Team</div><div class="ls">8 موظفين · 34 ملف</div></div>
+          <span class="pill pg">نشطة</span>
+        </div>
+        <div class="li">
+          <div class="av av-sq" style="background:#FEF3C7;color:#92400E;font-size:16px">⚙️</div>
+          <div class="lin"><div class="ln">Engineering</div><div class="ls">6 موظفين · 56 ملف</div></div>
+          <span class="pill pg">نشطة</span>
+        </div>
+        <div class="li">
+          <div class="av av-sq" style="background:#F0FDF4;color:#14532D;font-size:16px">💰</div>
+          <div class="lin"><div class="ln">Finance — سري</div><div class="ls">4 موظفين فقط · 29 ملف</div></div>
+          <span class="pill pa">خاص</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">آخر النشاطات</div>
+        <div class="li">
+          <div class="av av-sm" style="background:#4F46E5">م</div>
+          <div class="lin"><div class="ln">محمد علي رفع ملف</div><div class="ls">تقرير Q2.pdf · HR Room</div></div>
+          <span style="font-size:11px;color:var(--t3)">5د</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#10B981">س</div>
+          <div class="lin"><div class="ln">سارة أحمد دخلت Sales</div><div class="ls">أول دخول اليوم</div></div>
+          <span style="font-size:11px;color:var(--t3)">12د</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:var(--re)">!</div>
+          <div class="lin">
+            <div class="ln" style="color:var(--re)">محاولة دخول من جهاز مختلف</div>
+            <div class="ls">نور إبراهيم · HR Room</div>
+          </div>
+          <span style="font-size:11px;color:var(--re)">1س</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#F59E0B">أ</div>
+          <div class="lin"><div class="ln">أحمد حسن شاهد سياسة الحضور</div><div class="ls">PDF · 45 دقيقة</div></div>
+          <span style="font-size:11px;color:var(--t3)">2س</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: ROOMS
+   -->
+  <div class="page" id="p-rooms">
+    <div class="ph">
+      <div>
+        <div class="ph-t">الرومات</div>
+        <div class="ph-s">5 رومات نشطة — 48 موظف إجمالي</div>
+      </div>
+      <button class="btn btn-p"><i class="ti ti-plus"></i> روم جديدة</button>
+    </div>
+
+    <div class="g3">
+      <!-- HR Room -->
+      <div class="rc">
+        <div class="rc-head" style="background:#EEF2FF">
+          <div class="rc-emoji">🏢</div>
+          <div class="rc-badge"><span class="pill pg">نشطة</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-name" style="color:#1E1B4B">HR & السياسات</div>
+          <div class="rc-desc">سياسات الشركة، عقود التوظيف، تدريب الجدد</div>
+          <div class="rc-meta">
+            <div class="rc-stat"><strong>12</strong> موظف</div>
+            <div class="rc-stat"><strong>18</strong> ملف</div>
+            <div class="rc-stat"><strong>قراءة</strong> فقط</div>
+          </div>
+        </div>
+        <div class="rc-foot">
+          <button class="btn btn-p btn-xs" onclick="go('invite', document.querySelector('[onclick*=invite]'))"><i class="ti ti-user-plus"></i> دعوة</button>
+          <button class="btn btn-g btn-xs" onclick="go('files', document.querySelector('[onclick*=files]'))"><i class="ti ti-files"></i> الملفات</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-settings"></i></button>
+        </div>
+      </div>
+
+      <!-- Sales Team -->
+      <div class="rc">
+        <div class="rc-head" style="background:#ECFEFF">
+          <div class="rc-emoji">📊</div>
+          <div class="rc-badge"><span class="pill pg">نشطة</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-name" style="color:#0E7490">Sales Team</div>
+          <div class="rc-desc">تقارير المبيعات، اجتماعات الفريق، خطط Q3</div>
+          <div class="rc-meta">
+            <div class="rc-stat"><strong>8</strong> موظفين</div>
+            <div class="rc-stat"><strong>34</strong> ملف</div>
+            <div class="rc-stat"><strong>رفع</strong> + قراءة</div>
+          </div>
+        </div>
+        <div class="rc-foot">
+          <button class="btn btn-p btn-xs"><i class="ti ti-user-plus"></i> دعوة</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-files"></i> الملفات</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-settings"></i></button>
+        </div>
+      </div>
+
+      <!-- Engineering -->
+      <div class="rc">
+        <div class="rc-head" style="background:#FEF3C7">
+          <div class="rc-emoji">⚙️</div>
+          <div class="rc-badge"><span class="pill pg">نشطة</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-name" style="color:#92400E">Engineering</div>
+          <div class="rc-desc">Docs، بروتوكولات التطوير، Code Reviews</div>
+          <div class="rc-meta">
+            <div class="rc-stat"><strong>6</strong> موظفين</div>
+            <div class="rc-stat"><strong>56</strong> ملف</div>
+            <div class="rc-stat"><strong>رفع</strong> + قراءة</div>
+          </div>
+        </div>
+        <div class="rc-foot">
+          <button class="btn btn-p btn-xs"><i class="ti ti-user-plus"></i> دعوة</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-files"></i> الملفات</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-settings"></i></button>
+        </div>
+      </div>
+
+      <!-- Finance -->
+      <div class="rc">
+        <div class="rc-head" style="background:#F0FDF4">
+          <div class="rc-emoji">💰</div>
+          <div class="rc-badge"><span class="pill pa">خاص</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-name" style="color:#14532D">Finance — سري</div>
+          <div class="rc-desc">مستندات مالية سرية، هيكل الرواتب</div>
+          <div class="rc-meta">
+            <div class="rc-stat"><strong>4</strong> موظفين</div>
+            <div class="rc-stat"><strong>29</strong> ملف</div>
+            <div class="rc-stat"><strong>قراءة</strong> فقط</div>
+          </div>
+        </div>
+        <div class="rc-foot">
+          <button class="btn btn-p btn-xs"><i class="ti ti-user-plus"></i> دعوة</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-files"></i> الملفات</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-settings"></i></button>
+        </div>
+      </div>
+
+      <!-- Marketing -->
+      <div class="rc">
+        <div class="rc-head" style="background:#EDE9FE">
+          <div class="rc-emoji">🎯</div>
+          <div class="rc-badge"><span class="pill pg">نشطة</span></div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-name" style="color:#4C1D95">Marketing</div>
+          <div class="rc-desc">حملات إعلانية، براندينج، أصول التصميم</div>
+          <div class="rc-meta">
+            <div class="rc-stat"><strong>18</strong> موظف</div>
+            <div class="rc-stat"><strong>24</strong> ملف</div>
+          </div>
+        </div>
+        <div class="rc-foot">
+          <button class="btn btn-p btn-xs"><i class="ti ti-user-plus"></i> دعوة</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-files"></i> الملفات</button>
+          <button class="btn btn-g btn-xs"><i class="ti ti-settings"></i></button>
+        </div>
+      </div>
+
+      <!-- Add New Room -->
+      <div class="rc" style="border:2px dashed var(--bd);box-shadow:none">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;text-align:center;padding:20px">
+          <i class="ti ti-plus" style="font-size:28px;color:var(--t3);display:block;margin-bottom:8px"></i>
+          <div style="font-size:13px;font-weight:600;color:var(--t2)">روم جديدة</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px">حدد الاسم والصلاحيات</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: FILES
+   -->
+  <div class="page" id="p-files">
+    <div class="ph">
+      <div>
+        <div class="ph-t">الملفات</div>
+        <div class="ph-s">HR & السياسات · 18 ملف محمي</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-g btn-sm"><i class="ti ti-search"></i></button>
+        <button class="btn btn-p btn-sm"><i class="ti ti-cloud-upload"></i> رفع ملف</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <button class="chip on">الكل (18)</button>
+      <button class="chip">📄 PDF (8)</button>
+      <button class="chip">🎥 فيديو (4)</button>
+      <button class="chip">📊 Excel (3)</button>
+      <button class="chip">📋 Word (3)</button>
+      <div style="flex:1"></div>
+      <select style="padding:7px 12px;border:1px solid var(--bd);border-radius:var(--rsm);font-size:12px;font-family:'Cairo',sans-serif;outline:none">
+        <option>الأحدث</option>
+        <option>الأكثر مشاهدة</option>
+      </select>
+    </div>
+
+    <div class="alrt ag">
+      <i class="ti ti-shield-check"></i>
+      <span class="at">كل الملفات محمية — Watermark تلقائي + منع التحميل مفعّل</span>
+    </div>
+
+    <div class="fi">
+      <div class="fi-icon" style="background:#FEE2E2">📄</div>
+      <div style="flex:1">
+        <div class="fi-name">سياسة الحضور والانصراف 2025.pdf</div>
+        <div class="fi-meta"><span>2.4 MB</span><span>رُفع 10 يونيو</span><span>👁 12 مشاهدة</span></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="pill pr" style="font-size:10px">محمي</span>
+        <i class="ti ti-lock" style="color:var(--t3)"></i>
+        <button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button>
+      </div>
+    </div>
+
+    <div class="fi">
+      <div class="fi-icon" style="background:#DBEAFE">📊</div>
+      <div style="flex:1">
+        <div class="fi-name">هيكل الرواتب Q2 2025.xlsx</div>
+        <div class="fi-meta"><span>1.1 MB</span><span>رُفع 5 يونيو</span><span>👁 4 مشاهدات</span></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="pill pr" style="font-size:10px">محمي</span>
+        <i class="ti ti-lock" style="color:var(--t3)"></i>
+        <button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button>
+      </div>
+    </div>
+
+    <div class="fi">
+      <div class="fi-icon" style="background:#D1FAE5">📋</div>
+      <div style="flex:1">
+        <div class="fi-name">نماذج عقود التوظيف.docx</div>
+        <div class="fi-meta"><span>856 KB</span><span>رُفع 1 يونيو</span><span>👁 12 مشاهدة</span></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="pill pr" style="font-size:10px">محمي</span>
+        <i class="ti ti-lock" style="color:var(--t3)"></i>
+        <button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button>
+      </div>
+    </div>
+
+    <div class="fi">
+      <div class="fi-icon" style="background:#EDE9FE">🎥</div>
+      <div style="flex:1">
+        <div class="fi-name">تدريب الموظفين الجدد.mp4</div>
+        <div class="fi-meta"><span>245 MB</span><span>رُفع 28 مايو</span><span>👁 6 مشاهدات</span></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="pill pr" style="font-size:10px">محمي</span>
+        <i class="ti ti-lock" style="color:var(--t3)"></i>
+        <button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button>
+      </div>
+    </div>
+
+    <div class="fi">
+      <div class="fi-icon" style="background:#FEF3C7">📄</div>
+      <div style="flex:1">
+        <div class="fi-name">سياسة الإجازات والبدلات 2025.pdf</div>
+        <div class="fi-meta"><span>1.8 MB</span><span>رُفع 20 مايو</span><span>👁 11 مشاهدة</span></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="pill pr" style="font-size:10px">محمي</span>
+        <i class="ti ti-lock" style="color:var(--t3)"></i>
+        <button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: CALENDAR
+   -->
+  <div class="page" id="p-calendar">
+    <div class="ph">
+      <div>
+        <div class="ph-t">التقويم والمواعيد</div>
+        <div class="ph-s">جدولة الاجتماعات والمحاضرات</div>
+      </div>
+      <button class="btn btn-p btn-sm"><i class="ti ti-plus"></i> موعد جديد</button>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">مواعيد يونيو 2025</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">أح</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">إث</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">ثل</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">أر</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">خم</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">جم</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);padding:4px">سب</div>
+
+          <div style="font-size:11px;color:var(--t3);padding:6px">1</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">2</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">3</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">4</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">5</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">6</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">7</div>
+
+          <div style="font-size:11px;color:var(--t3);padding:6px">8</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">9</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">10</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">11</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">12</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">13</div>
+          <div style="font-size:11px;padding:6px;background:var(--p);color:#fff;border-radius:50%;font-weight:700">14</div>
+
+          <div style="font-size:11px;padding:6px;background:var(--pl);color:var(--p);border-radius:50%;font-weight:600">15</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">16</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">17</div>
+          <div style="font-size:11px;padding:6px;background:var(--aml);color:var(--am);border-radius:50%">18</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">19</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">20</div>
+          <div style="font-size:11px;color:var(--t3);padding:6px">21</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">المواعيد القادمة</div>
+        <div class="li">
+          <div style="width:4px;height:40px;border-radius:2px;background:var(--p);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">اجتماع Sales Q3 Planning</div><div class="ls">15 يونيو · 2:00 م · Sales Team Room</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-video"></i> Zoom</button>
+        </div>
+        <div class="li">
+          <div style="width:4px;height:40px;border-radius:2px;background:var(--am);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">مراجعة مرتبات Q2</div><div class="ls">18 يونيو · 11:00 ص · Finance Room</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-video"></i> Meet</button>
+        </div>
+        <div class="li">
+          <div style="width:4px;height:40px;border-radius:2px;background:var(--gr);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">تدريب موظفين جدد</div><div class="ls">20 يونيو · 10:00 ص · HR Room</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-video"></i> Zoom</button>
+        </div>
+        <button class="btn btn-p btn-sm" style="width:100%;justify-content:center;margin-top:10px">
+          <i class="ti ti-plus"></i> إضافة موعد جديد
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: INVITE
+   -->
+  <div class="page" id="p-invite">
+    <div class="ph">
+      <div>
+        <div class="ph-t">دعوة موظف</div>
+        <div class="ph-s">الموظف يدخل الروم بإيميله فقط — مش هيشوف أي روم تانية</div>
+      </div>
+    </div>
+
+    <div class="alrt ai">
+      <i class="ti ti-info-circle"></i>
+      <span class="at">الموظف بيوصله إيميل بالدعوة → يفتح الرابط → يسجّل → يشوف الروم اللي أضفته فيها فقط. مش هيعرف إن فيه رومات تانية.</span>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">تفاصيل الدعوة</div>
+        <div class="form-group">
+          <label class="form-label">الروم</label>
+          <select class="form-select">
+            <option>HR & السياسات</option>
+            <option>Sales Team</option>
+            <option>Engineering</option>
+            <option>Finance — سري</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">إيميلات الموظفين</label>
+          <div style="border:1.5px solid var(--p);border-radius:var(--rsm);padding:10px;min-height:75px;background:var(--w)">
+            <div style="display:flex;flex-wrap:wrap;gap:5px">
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--pl);color:var(--p);border-radius:20px;padding:3px 10px;font-size:12px">
+                m.ali@techcorp.eg <span style="cursor:pointer">×</span>
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--pl);color:var(--p);border-radius:20px;padding:3px 10px;font-size:12px">
+                s.ahmed@techcorp.eg <span style="cursor:pointer">×</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">الصلاحية</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="border:2px solid var(--p);border-radius:var(--rsm);padding:10px;cursor:pointer;background:var(--pl);text-align:center">
+              <div style="font-size:12px;font-weight:600;color:var(--p)">قراءة فقط</div>
+              <div style="font-size:10px;color:var(--t2);margin-top:2px">يشوف الملفات بس</div>
+            </div>
+            <div style="border:1.5px solid var(--bd);border-radius:var(--rsm);padding:10px;cursor:pointer;text-align:center">
+              <div style="font-size:12px;font-weight:600;color:var(--t1)">رفع + قراءة</div>
+              <div style="font-size:10px;color:var(--t2);margin-top:2px">يشوف ويرفع ملفات</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">مدة الوصول</label>
+          <select class="form-select">
+            <option>بدون انتهاء</option>
+            <option>شهر واحد</option>
+            <option>3 شهور</option>
+            <option>6 شهور</option>
+          </select>
+        </div>
+
+        <button class="btn btn-p" style="width:100%;justify-content:center">
+          <i class="ti ti-send"></i> إرسال الدعوة
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="ct">موظفي الروم الحاليين (12)</div>
+        <div class="li">
+          <div class="av av-sm" style="background:#4F46E5">م</div>
+          <div class="lin"><div class="ln">محمد أحمد علي</div><div class="ls">m.ali@techcorp.eg</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#06B6D4">س</div>
+          <div class="lin"><div class="ln">سارة محمود</div><div class="ls">s.mahmoud@techcorp.eg</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#10B981">أ</div>
+          <div class="lin"><div class="ln">أحمد حسين</div><div class="ls">a.hussein@techcorp.eg</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#F59E0B">ن</div>
+          <div class="lin"><div class="ln">نور إبراهيم</div><div class="ls">n.ibrahim@techcorp.eg</div></div>
+          <span class="pill pa">تحذير جهاز</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#EC4899">ر</div>
+          <div class="lin"><div class="ln">ريم خالد</div><div class="ls">r.khaled@techcorp.eg</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <a style="font-size:12px;color:var(--p);cursor:pointer;display:block;text-align:center;margin-top:10px">عرض كل الـ 12 موظف</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: MEMBERS
+   -->
+  <div class="page" id="p-members">
+    <div class="ph">
+      <div>
+        <div class="ph-t">الموظفين</div>
+        <div class="ph-s">48 موظف مفعّل</div>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="go('invite', document.querySelector('[onclick*=invite]'))">
+        <i class="ti ti-user-plus"></i> دعوة جديدة
+      </button>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <input style="padding:8px 12px;border:1px solid var(--bd);border-radius:var(--rsm);font-size:13px;font-family:'Cairo',sans-serif;outline:none;flex:1;min-width:180px" placeholder="🔍 ابحث عن موظف...">
+      <select style="padding:8px 12px;border:1px solid var(--bd);border-radius:var(--rsm);font-size:13px;font-family:'Cairo',sans-serif;outline:none">
+        <option>كل الرومات</option>
+        <option>HR Room</option>
+        <option>Sales Team</option>
+        <option>Engineering</option>
+      </select>
+      <button class="chip on">الكل</button>
+      <button class="chip">نشط</button>
+      <button class="chip">تحذير</button>
+      <button class="chip">منتهي</button>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>الموظف</th><th>الروم</th><th>الصلاحية</th>
+            <th>الحالة</th><th>التقدم</th><th>الجهاز</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:9px">
+                <div class="av av-sm" style="background:#4F46E5">م</div>
+                <div><div style="font-size:13px;font-weight:600">محمد أحمد</div><div style="font-size:11px;color:var(--t3)">01012345678</div></div>
+              </div>
+            </td>
+            <td><span class="pill pb">HR Room</span></td>
+            <td><span class="pill pgy">قراءة فقط</span></td>
+            <td><span class="pill pg">✅ نشط</span></td>
+            <td><div style="width:70px"><div class="pbar"><div class="pf" style="width:72%"></div></div><div style="font-size:10px;color:var(--t3);margin-top:2px">72%</div></div></td>
+            <td><span class="pill pg" style="font-size:10px">📱 مربوط</span></td>
+            <td><button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:9px">
+                <div class="av av-sm" style="background:#06B6D4">س</div>
+                <div><div style="font-size:13px;font-weight:600">سارة محمود</div><div style="font-size:11px;color:var(--t3)">01098765432</div></div>
+              </div>
+            </td>
+            <td><span class="pill pb">Sales Team</span></td>
+            <td><span class="pill pb">رفع + قراءة</span></td>
+            <td><span class="pill pg">✅ نشط</span></td>
+            <td><div style="width:70px"><div class="pbar"><div class="pf" style="width:45%;background:var(--am)"></div></div><div style="font-size:10px;color:var(--t3);margin-top:2px">45%</div></div></td>
+            <td><span class="pill pg" style="font-size:10px">📱 مربوط</span></td>
+            <td><button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:9px">
+                <div class="av av-sm" style="background:#F59E0B">ن</div>
+                <div><div style="font-size:13px;font-weight:600">نور إبراهيم</div><div style="font-size:11px;color:var(--t3)">01234567890</div></div>
+              </div>
+            </td>
+            <td><span class="pill pb">HR Room</span></td>
+            <td><span class="pill pgy">قراءة فقط</span></td>
+            <td><span class="pill pa">⚠️ تحذير</span></td>
+            <td><div style="width:70px"><div class="pbar"><div class="pf" style="width:28%;background:var(--re)"></div></div><div style="font-size:10px;color:var(--t3);margin-top:2px">28%</div></div></td>
+            <td><span class="pill pr" style="font-size:10px">⚠️ جهاز مختلف</span></td>
+            <td><button class="btn btn-p btn-xs">Reset</button></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:9px">
+                <div class="av av-sm" style="background:#10B981">أ</div>
+                <div><div style="font-size:13px;font-weight:600">أحمد حسين</div><div style="font-size:11px;color:var(--t3)">01156789012</div></div>
+              </div>
+            </td>
+            <td><span class="pill pb">Engineering</span></td>
+            <td><span class="pill pb">رفع + قراءة</span></td>
+            <td><span class="pill pg">✅ نشط</span></td>
+            <td><div style="width:70px"><div class="pbar"><div class="pf" style="width:91%"></div></div><div style="font-size:10px;color:var(--t3);margin-top:2px">91%</div></div></td>
+            <td><span class="pill pg" style="font-size:10px">📱 مربوط</span></td>
+            <td><button class="btn btn-g btn-xs"><i class="ti ti-dots"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: NOTIFICATIONS
+   -->
+  <div class="page" id="p-notifications">
+    <div class="ph">
+      <div>
+        <div class="ph-t">الإشعارات</div>
+        <div class="ph-s">إرسال إشعارات لأعضاء الرومات</div>
+      </div>
+    </div>
+
+    <div class="notif-layout">
+      <div class="card">
+        <div class="ct">إشعار جديد</div>
+        <div class="form-group">
+          <label class="form-label">العنوان</label>
+          <input class="form-input" placeholder="مثال: محاضرة جديدة متاحة الآن...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">الرسالة</label>
+          <textarea class="form-textarea" placeholder="اكتب تفاصيل الإشعار..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">إرسال إلى</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="chip on">كل الموظفين</button>
+            <button class="chip">HR Room</button>
+            <button class="chip">Sales Team</button>
+            <button class="chip">Engineering</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">القناة</label>
+          <div style="display:flex;gap:14px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--p)"> Push</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--p)"> Email</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" style="accent-color:var(--p)"> واتساب</label>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p" style="flex:1;justify-content:center"><i class="ti ti-send"></i> إرسال الآن</button>
+          <button class="btn btn-g"><i class="ti ti-clock"></i> جدولة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">السجل</div>
+        <div class="li">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--gr);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">محاضرة جديدة: Neural Networks</div><div class="ls">198 أُرسل · 142 فتح · 71%</div></div>
+          <span style="font-size:10px;color:var(--t3)">2س</span>
+        </div>
+        <div class="li">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--am);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">⚠️ اشتراكك بينتهي قريب</div><div class="ls">23 أُرسل · 19 فتح · 82%</div></div>
+          <span style="font-size:10px;color:var(--t3)">أمس</span>
+        </div>
+        <div class="li">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--p);flex-shrink:0"></div>
+          <div class="lin"><div class="ln">🎉 مرحباً في TechCorp</div><div class="ls">34 أُرسل · 34 فتح · 100%</div></div>
+          <span style="font-size:10px;color:var(--t3)">3 أيام</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: ANALYTICS
+   -->
+  <div class="page" id="p-analytics">
+    <div class="ph">
+      <div>
+        <div class="ph-t">التحليلات</div>
+        <div class="ph-s">يونيو 2025 — TechCorp Egypt</div>
+      </div>
+      <button class="btn btn-g btn-sm"><i class="ti ti-download"></i> تصدير</button>
+    </div>
+
+    <div class="g3" style="margin-bottom:18px">
+      <div class="card">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:5px">الموظفين</div>
+        <div style="font-size:28px;font-weight:800;color:var(--p)">48</div>
+        <div style="font-size:11px;color:var(--t3)">▲ +3 هذا الشهر</div>
+        <div class="mini-bars">
+          <div class="mb" style="height:40%"></div><div class="mb" style="height:55%"></div>
+          <div class="mb" style="height:45%"></div><div class="mb" style="height:70%"></div>
+          <div class="mb" style="height:60%"></div><div class="mb hi" style="height:90%"></div>
+          <div class="mb hi" style="height:100%"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:5px">مشاهدات الملفات</div>
+        <div style="font-size:28px;font-weight:800;color:var(--cy)">1.2K</div>
+        <div style="font-size:11px;color:var(--t3)">▲ +18% عن الشهر</div>
+        <div class="mini-bars">
+          <div class="mb" style="height:50%"></div><div class="mb" style="height:65%"></div>
+          <div class="mb" style="height:40%"></div><div class="mb" style="height:80%"></div>
+          <div class="mb" style="height:75%"></div><div class="mb hi" style="height:95%"></div>
+          <div class="mb hi" style="height:85%"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;color:var(--t2);margin-bottom:5px">نشطين اليوم</div>
+        <div style="font-size:28px;font-weight:800;color:var(--gr)">34</div>
+        <div style="font-size:11px;color:var(--t3)">من 48 إجمالي</div>
+        <div class="pbar" style="margin-top:12px"><div class="pf" style="width:71%;background:var(--gr)"></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="ct">مشاهدات الملفات — يونيو 2025</div>
+      <div class="bars" style="height:110px">
+        <div class="bw"><div class="bar" style="height:40%"></div><div class="bl">1</div></div>
+        <div class="bw"><div class="bar" style="height:55%"></div><div class="bl">3</div></div>
+        <div class="bw"><div class="bar" style="height:35%"></div><div class="bl">5</div></div>
+        <div class="bw"><div class="bar hi" style="height:80%"></div><div class="bl">7</div></div>
+        <div class="bw"><div class="bar" style="height:60%"></div><div class="bl">9</div></div>
+        <div class="bw"><div class="bar" style="height:45%"></div><div class="bl">11</div></div>
+        <div class="bw"><div class="bar hi" style="height:90%"></div><div class="bl">13</div></div>
+        <div class="bw"><div class="bar" style="height:70%"></div><div class="bl">15</div></div>
+        <div class="bw"><div class="bar" style="height:50%"></div><div class="bl">17</div></div>
+        <div class="bw"><div class="bar hi" style="height:100%"></div><div class="bl">19</div></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">أكثر الموظفين نشاطاً</div>
+        <div class="li">
+          <div class="av av-sm" style="background:#4F46E5">م</div>
+          <div class="lin"><div class="ln">محمد أحمد</div><div class="ls">Sales Team · 42 مشاهدة</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#10B981">س</div>
+          <div class="lin"><div class="ln">سارة علي</div><div class="ls">HR Room · 38 مشاهدة</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#F59E0B">أ</div>
+          <div class="lin"><div class="ln">أحمد حسن</div><div class="ls">Engineering · 29 مشاهدة</div></div>
+          <span class="pill pg">نشط</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">غير نشطين (+7 أيام)</div>
+        <div class="li">
+          <div class="av av-sm" style="background:#9CA3AF">خ</div>
+          <div class="lin"><div class="ln">خالد سمير</div><div class="ls">آخر دخول: 7 يونيو</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-bell"></i> تذكير</button>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#9CA3AF">ه</div>
+          <div class="lin"><div class="ln">هالة رمضان</div><div class="ls">آخر دخول: 5 يونيو</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-bell"></i> تذكير</button>
+        </div>
+        <div class="li">
+          <div class="av av-sm" style="background:#9CA3AF">و</div>
+          <div class="lin"><div class="ln">وليد مصطفى</div><div class="ls">آخر دخول: 3 يونيو</div></div>
+          <button class="btn btn-g btn-xs"><i class="ti ti-bell"></i> تذكير</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: SECURITY
+   -->
+  <div class="page" id="p-security">
+    <div class="ph">
+      <div>
+        <div class="ph-t">الأمان وحماية المحتوى</div>
+        <div class="ph-s">Anti-Leak System — TechCorp Egypt</div>
+      </div>
+    </div>
+
+    <div class="alrt ai">
+      <i class="ti ti-shield-check"></i>
+      <span class="at">تفعيل الحماية يقلل التسريب بنسبة +90%</span>
+    </div>
+
+    <div class="g2" style="margin-bottom:18px">
+      <div class="card">
+        <div class="ct">إعدادات الحماية</div>
+        <div class="tog-row">
+          <div><div class="tn2">One Device Policy</div><div class="ts2">كل حساب = موبايل واحد</div></div>
+          <button class="tog"></button>
+        </div>
+        <div class="tog-row">
+          <div><div class="tn2">Watermark تلقائي</div><div class="ts2">اسم الموظف على كل ملف</div></div>
+          <button class="tog"></button>
+        </div>
+        <div class="tog-row">
+          <div><div class="tn2">منع التحميل</div><div class="ts2">الموظفين يشوفوا بس</div></div>
+          <button class="tog"></button>
+        </div>
+        <div class="tog-row">
+          <div><div class="tn2">منع Screen Recording</div><div class="ts2">iOS فقط حالياً</div></div>
+          <button class="tog off"></button>
+        </div>
+        <div class="tog-row">
+          <div><div class="tn2">تسجيل كل النشاطات</div><div class="ts2">Audit log كامل</div></div>
+          <button class="tog"></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct">حد الأجهزة</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button class="btn btn-g" style="flex:1;justify-content:center">1 جهاز</button>
+          <button class="btn btn-p" style="flex:1;justify-content:center">2 جهاز ✓</button>
+          <button class="btn btn-g" style="flex:1;justify-content:center">3 أجهزة</button>
+        </div>
+        <div class="dv"></div>
+        <div class="ct" style="margin-bottom:10px">إحصائيات</div>
+        <div class="g2" style="gap:10px">
+          <div style="background:var(--grl);border-radius:var(--rsm);padding:12px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:#065F46">46</div>
+            <div style="font-size:11px;color:#065F46">حساب محمي</div>
+          </div>
+          <div style="background:var(--rel);border-radius:var(--rsm);padding:12px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:#991B1B">3</div>
+            <div style="font-size:11px;color:#991B1B">محاولة اختراق</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct">محاولات الاختراق <span class="pill pr">3 هذا الأسبوع</span></div>
+      <div class="viol-item">
+        <div class="viol-icon"><i class="ti ti-device-mobile"></i></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">نور إبراهيم — دخول من جهاز جديد</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">HR Room · منذ ساعة · Samsung Galaxy S24</div>
+        </div>
+        <button class="btn btn-g btn-xs">Reset الجهاز</button>
+      </div>
+      <div class="viol-item">
+        <div class="viol-icon"><i class="ti ti-screenshot"></i></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">خالد سمير — محاولة Screen Recording</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">Sales Team · منذ 3 ساعات · اتعتمت تلقائي</div>
+        </div>
+        <button class="btn btn-g btn-xs">إشعار تحذيري</button>
+      </div>
+      <div class="viol-item" style="border:none">
+        <div class="viol-icon"><i class="ti ti-download-off"></i></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">ريم علي — محاولة تحميل فيديو</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">Engineering · أمس · اتمنعت تلقائي</div>
+        </div>
+        <button class="btn btn-g btn-xs" style="color:var(--t3)">تجاهل</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: COMPANY PROFILE
+   -->
+  <div class="page" id="p-profile">
+    <div class="ph">
+      <div>
+        <div class="ph-t">ملف الشركة</div>
+        <div class="ph-s">اللوجو والبايو دي اللي هتظهر لموظفينك على الأبليكيشن</div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">الهوية البصرية</div>
+        <div style="text-align:center;margin-bottom:18px">
+          <div id="profLogoPreview" style="width:96px;height:96px;border-radius:22px;background:#4F46E5;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#fff;margin:0 auto 12px;box-shadow:var(--sh)">TE</div>
+          <button class="btn btn-g btn-sm" onclick="document.getElementById('profLogoInput').click()">
+            <i class="ti ti-upload"></i> تغيير اللوجو
+          </button>
+          <input type="file" id="profLogoInput" accept="image/*" style="display:none" onchange="profPreviewLogo(event)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">اسم الشركة المعروض</label>
+          <input class="form-input" id="prof-name" value="TechCorp Egypt" oninput="profUpdate()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">نبذة عن الشركة (Bio)</label>
+          <textarea class="form-textarea" id="prof-bio" maxlength="180" oninput="profUpdate()">شركة TechCorp Egypt متخصصة في حلول البرمجيات للشركات الناشئة في مصر والمنطقة العربية، تأسست عام 2019.</textarea>
+          <div class="form-hint" id="prof-bio-count" style="text-align:left">0/180</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">لون العلامة التجارية</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="profColorRow">
+            <div style="width:30px;height:30px;border-radius:50%;background:#4F46E5;border:3px solid #4F46E5;cursor:pointer" onclick="profSelectColor(this,'#4F46E5')"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#06B6D4;cursor:pointer" onclick="profSelectColor(this,'#06B6D4')"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#10B981;cursor:pointer" onclick="profSelectColor(this,'#10B981')"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#F59E0B;cursor:pointer" onclick="profSelectColor(this,'#F59E0B')"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#EF4444;cursor:pointer" onclick="profSelectColor(this,'#EF4444')"></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:#EC4899;cursor:pointer" onclick="profSelectColor(this,'#EC4899')"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">رقم الواتساب للتواصل</label>
+          <input class="form-input" placeholder="+201XXXXXXXXX">
+        </div>
+
+        <button class="btn btn-p" style="margin-top:6px">
+          <i class="ti ti-device-floppy"></i> حفظ التغييرات
+        </button>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="ct">كده هيظهر لموظفينك 👀</div>
+          <div style="border:1px solid var(--bd);border-radius:var(--rsm);padding:16px;background:var(--sf)">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              <div id="profPreviewLogo2" style="width:40px;height:40px;border-radius:10px;background:#4F46E5;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff">TE</div>
+              <div>
+                <div id="profPreviewName2" style="font-size:14px;font-weight:700">TechCorp Egypt</div>
+                <div style="font-size:11px;color:var(--t2)">أهلاً، محمد 👋</div>
+              </div>
+            </div>
+            <div id="profPreviewBio2" style="font-size:12px;color:var(--t2);line-height:1.6;background:#fff;border-radius:8px;padding:10px;border:1px solid var(--bd)">شركة TechCorp Egypt متخصصة في حلول البرمجيات...</div>
+          </div>
+          <div class="form-hint" style="margin-top:10px">المعاينة دي بتتحدث لحظياً مع أي تعديل على الشمال</div>
+        </div>
+
+        <div class="card">
+          <div class="ct">عناصر هوية إضافية</div>
+          <div class="tog-row">
+            <div><div class="tn2">إظهار البايو في الأبليكيشن</div><div class="ts2">يظهر للموظفين في شاشة "حسابي"</div></div>
+            <button class="tog"></button>
+          </div>
+          <div class="tog-row">
+            <div><div class="tn2">White Label كامل</div><div class="ts2">إخفاء "Powered by Sub Pay" — متاح من باقة Pro</div></div>
+            <button class="tog off"></button>
+          </div>
+          <div class="tog-row" style="border:none">
+            <div><div class="tn2">رابط الموقع الإلكتروني</div></div>
+          </div>
+          <input class="form-input" placeholder="https://techcorp.eg" style="margin-top:-4px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+       PAGE: SUBSCRIPTION
+   -->
+  <div class="page" id="p-subscription">
+    <div class="ph">
+      <div>
+        <div class="ph-t">اشتراكي</div>
+        <div class="ph-s">TechCorp Egypt · باقة Growth</div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card" style="border:2px solid var(--p)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:16px;font-weight:700">باقة Growth</div>
+          <span class="pill pg">✓ نشطة</span>
+        </div>
+        <div style="font-size:28px;font-weight:800;color:var(--p)">
+          1,200 <span style="font-size:14px;color:var(--t2);font-weight:400">جنيه/شهر</span>
+        </div>
+        <div class="pbar" style="margin:12px 0"><div class="pf" style="width:65%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2)">
+          <span>19 يوم متبقي</span><span>ينتهي 3 يوليو 2025</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px">
+          <span style="background:var(--pl);color:var(--p);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500">10 رومات</span>
+          <span style="background:var(--pl);color:var(--p);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500">500 مستخدم</span>
+          <span style="background:var(--pl);color:var(--p);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500">Anti-Leak</span>
+        </div>
+        <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:14px">
+          <i class="ti ti-refresh"></i> تجديد الاشتراك
+        </button>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">استخدامي الحالي</div>
+          <div class="li">
+            <span style="font-size:13px;color:var(--t2)">الرومات</span>
+            <div style="flex:1;margin:0 10px"><div class="pbar"><div class="pf" style="width:50%"></div></div></div>
+            <span style="font-size:12px;font-weight:600">5 / 10</span>
+          </div>
+          <div class="li">
+            <span style="font-size:13px;color:var(--t2)">المستخدمين</span>
+            <div style="flex:1;margin:0 10px"><div class="pbar"><div class="pf" style="width:10%"></div></div></div>
+            <span style="font-size:12px;font-weight:600">48 / 500</span>
+          </div>
+          <div class="li" style="border:none">
+            <span style="font-size:13px;color:var(--t2)">الملفات</span>
+            <div style="flex:1;margin:0 10px"><div class="pbar"><div class="pf" style="width:28%"></div></div></div>
+            <span style="font-size:12px;font-weight:600">142 / 500</span>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--ink);border-color:var(--ink)">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px">ترقية لـ Pro؟</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:12px">رومات غير محدودة + White Label + Payments</div>
+          <button class="btn" style="background:var(--cy);color:#fff;width:100%;justify-content:center">
+            <i class="ti ti-arrow-up"></i> ترقية لـ 2,500 ج/شهر
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<script src="app.js"></script>
+</body>
+</html>
